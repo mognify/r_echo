@@ -25,3 +25,28 @@ if !snd_dvc.supports_format(soundio::Format::S16LE) {
 if !snd_dvc.supports_sample_rate(44100) {
     return Err("Device doesn't 44.1 kHz".to_string());
 }
+//
+fn read_callback(stream: &mut soundio::InStreamReader) {
+    let frame_count_max = stream.frame_count_max();
+    if let Err(e) = stream.begin_read(frame_count_max) {
+        println!("Error reading from stream: {}", e);
+        return;
+    }
+    
+    for f in 0..stream.frame_count() {
+        for c in 0..stream.channel_count() {
+            store_audio(stream.sample::<i16>(c, f));
+        }
+    }
+}
+
+let mut input_stream = snd_dvc.open_instream(
+    44100,
+    soundio::Format::S16LE,
+    soundio::ChannelLayout::get_builtin(soundio::ChannelLayoutId::Stereo),
+    2.0,
+    read_callback,
+    None::<fn()>,
+    None::<fn(soundio::Error)>,
+)?;
+input_stream.start()?;
