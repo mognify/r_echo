@@ -1,3 +1,5 @@
+// https://doc.rust-lang.org/1.0.0/style/style/naming/README.html
+
 /*
 to start:
 get mic
