@@ -1,3 +1,15 @@
+/*
+to start:
+get mic
+get speakers
+play mic through speakers at great delay
+
+next:
+recognize voice
+store recognized voice portion
+play RVP later
+*/
+
 //https://docs.rs/soundio/latest/soundio/
 let snd_ctx = soundio::Context::new();
 snd_ctx.flush_events();
